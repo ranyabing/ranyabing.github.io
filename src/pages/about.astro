@@ -1,0 +1,21 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { SITE } from '@/data/site';
+---
+
+<BaseLayout title="关于" description="关于这个技术博客。">
+  <section class="page-heading">
+    <p class="eyebrow">About</p>
+    <h1>关于</h1>
+    <p>这里用于记录工程实践、问题排查、工具使用和持续学习。</p>
+  </section>
+
+  <div class="prose prose--page">
+    <p>
+      这个博客会优先沉淀可复用的技术经验：清晰的问题背景、排查过程、取舍依据和最终方案。
+    </p>
+    <p>
+      GitHub：<a href={SITE.github} rel="noreferrer">{SITE.github}</a>
+    </p>
+  </div>
+</BaseLayout>

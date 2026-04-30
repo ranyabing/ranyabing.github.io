@@ -1,0 +1,35 @@
+---
+import type { Post } from '@/utils/posts';
+import { formatDate, getTagUrl } from '@/utils/posts';
+
+interface Props {
+  posts: Post[];
+}
+
+const { posts } = Astro.props;
+---
+
+<div class="post-list">
+  {
+    posts.map((post) => (
+      <article class="post-card">
+        <div class="post-card__meta">
+          <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
+        </div>
+        <h2>
+          <a href={`/posts/${post.slug}/`}>{post.data.title}</a>
+        </h2>
+        <p>{post.data.description}</p>
+        {post.data.tags.length > 0 && (
+          <ul class="tag-list" aria-label="文章标签">
+            {post.data.tags.map((tag) => (
+              <li>
+                <a href={getTagUrl(tag)}>{tag}</a>
+              </li>
+            ))}
+          </ul>
+        )}
+      </article>
+    ))
+  }
+</div>

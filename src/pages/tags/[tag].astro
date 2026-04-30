@@ -1,0 +1,30 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import PostList from '@/components/PostList.astro';
+import { getAllTags, isPublished, sortPosts } from '@/utils/posts';
+
+export async function getStaticPaths() {
+  const posts = (await getCollection('posts')).filter(isPublished);
+  const tags = getAllTags(posts);
+
+  return tags.map((tag) => ({
+    params: { tag },
+    props: {
+      tag,
+      posts: sortPosts(posts.filter((post) => post.data.tags.includes(tag)))
+    }
+  }));
+}
+
+const { tag, posts } = Astro.props;
+---
+
+<BaseLayout title={`标签：${tag}`} description={`标签 ${tag} 下的技术文章。`}>
+  <section class="page-heading">
+    <p class="eyebrow">Tag</p>
+    <h1>{tag}</h1>
+    <p>{posts.length} 篇文章</p>
+  </section>
+  <PostList posts={posts} />
+</BaseLayout>

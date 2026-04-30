@@ -1,0 +1,32 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getAllTags, getTagUrl, isPublished } from '@/utils/posts';
+
+const posts = (await getCollection('posts')).filter(isPublished);
+const tags = getAllTags(posts).map((tag) => ({
+  name: tag,
+  count: posts.filter((post) => post.data.tags.includes(tag)).length
+}));
+---
+
+<BaseLayout title="标签" description="按主题整理技术文章。">
+  <section class="page-heading">
+    <p class="eyebrow">Tags</p>
+    <h1>标签</h1>
+    <p>按主题快速找到相关文章。</p>
+  </section>
+
+  <ul class="tag-index">
+    {
+      tags.map((tag) => (
+        <li>
+          <a href={getTagUrl(tag.name)}>
+            <span>{tag.name}</span>
+            <em>{tag.count}</em>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</BaseLayout>

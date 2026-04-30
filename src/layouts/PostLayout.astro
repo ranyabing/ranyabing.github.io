@@ -1,0 +1,62 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { formatDate, getTagUrl } from '@/utils/posts';
+import type { Post } from '@/utils/posts';
+
+interface Props {
+  post: Post;
+  headings: { depth: number; slug: string; text: string }[];
+}
+
+const { post, headings } = Astro.props;
+const toc = headings.filter((heading) => heading.depth > 1 && heading.depth < 4);
+---
+
+<BaseLayout title={post.data.title} description={post.data.description}>
+  <article class="article-shell">
+    <header class="article-header">
+      <p class="eyebrow">技术文章</p>
+      <h1>{post.data.title}</h1>
+      <p>{post.data.description}</p>
+      <div class="article-meta">
+        <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
+        {
+          post.data.updatedDate && (
+            <span>更新于 {formatDate(post.data.updatedDate)}</span>
+          )
+        }
+      </div>
+      {
+        post.data.tags.length > 0 && (
+          <ul class="tag-list" aria-label="文章标签">
+            {post.data.tags.map((tag) => (
+              <li>
+                <a href={getTagUrl(tag)}>{tag}</a>
+              </li>
+            ))}
+          </ul>
+        )
+      }
+    </header>
+
+    <div class="article-grid">
+      {
+        toc.length > 0 && (
+          <aside class="toc" aria-label="文章目录">
+            <strong>目录</strong>
+            <ol>
+              {toc.map((heading) => (
+                <li class={`depth-${heading.depth}`}>
+                  <a href={`#${heading.slug}`}>{heading.text}</a>
+                </li>
+              ))}
+            </ol>
+          </aside>
+        )
+      }
+      <div class="prose">
+        <slot />
+      </div>
+    </div>
+  </article>
+</BaseLayout>
