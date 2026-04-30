@@ -7,9 +7,8 @@ import { isPublished, sortPosts } from '@/utils/posts';
 const posts = sortPosts((await getCollection('posts')).filter(isPublished));
 ---
 
-<BaseLayout title="全部文章" description="按时间倒序整理的技术文章归档。">
+<BaseLayout title="全部文章" description="按时间倒序整理的文章归档。">
   <section class="page-heading">
-    <p class="eyebrow">Archive</p>
     <h1>全部文章</h1>
     <p>按发布时间倒序整理。</p>
   </section>

@@ -1,0 +1,35 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { photos } from '@/data/photos';
+---
+
+<BaseLayout title="摄影" description="以 NASA 图像说明方式呈现的摄影板块。">
+  <section class="page-heading">
+    <h1>摄影</h1>
+    <p>画面在前，点击图片展开小字说明。</p>
+  </section>
+
+  <section class="photo-gallery" aria-label="摄影">
+    {
+      photos.map((photo) => (
+        <details class="photo-item">
+          <summary aria-label={`展开 ${photo.title} 的说明`}>
+            <img
+              src={photo.src}
+              alt={photo.alt}
+              width={photo.width}
+              height={photo.height}
+              loading="lazy"
+              decoding="async"
+            />
+          </summary>
+          <div class="photo-caption">
+            <p class="photo-title">{photo.title}</p>
+            <p>{photo.description}</p>
+            <p class="photo-credit">{photo.credit}</p>
+          </div>
+        </details>
+      ))
+    }
+  </section>
+</BaseLayout>

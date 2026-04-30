@@ -2,55 +2,36 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import PostList from '@/components/PostList.astro';
-import { SITE } from '@/data/site';
-import { isPublished, sortPosts, getAllTags, getTagUrl } from '@/utils/posts';
+import { photos } from '@/data/photos';
+import { isPublished, sortPosts } from '@/utils/posts';
 
 const posts = sortPosts((await getCollection('posts')).filter(isPublished));
 const latestPosts = posts.slice(0, 6);
-const tags = getAllTags(posts).slice(0, 12);
+const featuredPhoto = photos[0];
 ---
 
 <BaseLayout>
-  <section class="intro">
-    <div>
-      <p class="eyebrow">ranyabing.github.io</p>
-      <h1>工程实践与技术笔记</h1>
-      <p>{SITE.description}</p>
-    </div>
-    <div class="intro-panel" aria-label="博客概览">
-      <span>{posts.length}</span>
-      <p>篇已发布文章</p>
-    </div>
-  </section>
-
-  <section class="section-header">
-    <div>
-      <p class="eyebrow">Latest</p>
-      <h2>最新文章</h2>
-    </div>
-    <a href="/posts/">全部文章</a>
+  <section class="page-heading page-heading--home">
+    <h1>首页</h1>
   </section>
 
   <PostList posts={latestPosts} />
 
-  {
-    tags.length > 0 && (
-      <section class="tag-cloud" aria-labelledby="home-tags">
-        <div class="section-header">
-          <div>
-            <p class="eyebrow">Topics</p>
-            <h2 id="home-tags">常写主题</h2>
-          </div>
-          <a href="/tags/">全部标签</a>
-        </div>
-        <ul class="tag-list tag-list--large">
-          {tags.map((tag) => (
-            <li>
-              <a href={getTagUrl(tag)}>{tag}</a>
-            </li>
-          ))}
-        </ul>
-      </section>
-    )
-  }
+  <section class="home-photo" aria-labelledby="home-photo-title">
+    <h2 id="home-photo-title">
+      <a href="/photography/">摄影</a>
+    </h2>
+    <a class="home-photo__image" href="/photography/" aria-label="查看摄影">
+      <img
+        src={featuredPhoto.src}
+        alt={featuredPhoto.alt}
+        width={featuredPhoto.width}
+        height={featuredPhoto.height}
+        loading="lazy"
+        decoding="async"
+      />
+    </a>
+    <p>{featuredPhoto.description}</p>
+    <a class="read-more" href="/photography/">View Photography</a>
+  </section>
 </BaseLayout>

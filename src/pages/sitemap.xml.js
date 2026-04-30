@@ -9,6 +9,7 @@ export async function GET({ site }) {
   const paths = [
     '/',
     '/posts/',
+    '/photography/',
     '/tags/',
     '/about/',
     ...posts.map((post) => `/posts/${post.slug}/`),

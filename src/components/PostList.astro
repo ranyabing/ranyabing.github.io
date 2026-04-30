@@ -1,6 +1,6 @@
 ---
 import type { Post } from '@/utils/posts';
-import { formatDate, getTagUrl } from '@/utils/posts';
+import { formatDate } from '@/utils/posts';
 
 interface Props {
   posts: Post[];
@@ -20,15 +20,7 @@ const { posts } = Astro.props;
           <a href={`/posts/${post.slug}/`}>{post.data.title}</a>
         </h2>
         <p>{post.data.description}</p>
-        {post.data.tags.length > 0 && (
-          <ul class="tag-list" aria-label="文章标签">
-            {post.data.tags.map((tag) => (
-              <li>
-                <a href={getTagUrl(tag)}>{tag}</a>
-              </li>
-            ))}
-          </ul>
-        )}
+        <a class="read-more" href={`/posts/${post.slug}/`}>View Article</a>
       </article>
     ))
   }
